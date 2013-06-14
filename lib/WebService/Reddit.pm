@@ -1,35 +1,48 @@
 package WebService::Reddit;
 
-use 5.016002;
+use 5.008008;
 use strict;
 use warnings;
 
-require Exporter;
+use namespace::autoclean;
+use Moose;
+use WebService::Reddit::API;
+use WebService::Reddit::Listing;
+use Carp;
 
-our @ISA = qw(Exporter);
+# Semantic versioning rules apply.
+our $VERSION = '0.01.01';
 
-# Items to export into callers namespace by default. Note: do not export
-# names by default without a very good reason. Use EXPORT_OK instead.
-# Do not simply export all your public functions/methods/constants.
-
-# This allows declaration	use WebService::Reddit ':all';
-# If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
-# will save memory.
-our %EXPORT_TAGS = ( 'all' => [ qw(
-	
-) ] );
-
-our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
-
-our @EXPORT = qw(
-	
+has '_api' => (
+	is => 'rw',
+	isa => 'WebService::Reddit::API',
+	default => sub { WebService::Reddit::API->new },
 );
 
-our $VERSION = '0.01';
+has 'builder' => (
+	is => 'ro',
+	isa => 'WebService::Reddit::Builder',
+	default => sub { WebService::Reddit::Builder->new },
+);
 
+sub top {
+	my ($self, %args) = @_;
+	
+	my $data = $self->_api->top(%args);
+	
+	return $self->builder->build(json => $data);
+}
+	
 
-# Preloaded methods go here.
+sub login {
+	my ($self, %args) = @_;
+	
+	croak "username required" unless $args{username};
+	croak "password required" unless $args{password};
+	
+}
 
+__PACKAGE__->meta->make_immutable;
 1;
 __END__
 # Below is stub documentation for your module. You'd better edit it!

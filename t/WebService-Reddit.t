@@ -8,7 +8,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 1;
+use Test::More tests => 3;
 BEGIN { use_ok('WebService::Reddit') };
 
 #########################
@@ -16,3 +16,9 @@ BEGIN { use_ok('WebService::Reddit') };
 # Insert your test code below, the Test::More module is use()ed here so read
 # its man page ( perldoc Test::More ) for help writing this test script.
 
+can_ok('WebService::Reddit', qw(
+	new
+	login
+));
+
+my $r = new_ok('WebService::Reddit');
