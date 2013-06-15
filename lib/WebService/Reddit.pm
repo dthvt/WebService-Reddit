@@ -25,6 +25,14 @@ has 'builder' => (
 	default => sub { WebService::Reddit::Builder->new },
 );
 
+sub comments {
+	my ($self, $id, %args) = @_;
+	
+	my $data = $self->_api->comments($id, %args);
+	
+	return $self->builder->build(json => $data);
+}
+
 sub controversial {
 	my ($self, %args) = @_;
 	

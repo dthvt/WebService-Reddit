@@ -21,7 +21,7 @@ has 'name' => (
 );
 
 has 'kind' => (
-	is => 'rw',
+	is => 'ro',
 	isa => Str,
 );
 

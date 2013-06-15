@@ -7,6 +7,12 @@ use WebService::Reddit::Builder;
 
 use Data::Dumper qw(Dumper);
 
+has 'kind' => (
+	is => 'ro',
+	isa => Str,
+	default => 'Listing',
+);
+
 has 'before' => (
 	is => 'ro',
 	isa => Maybe[Str],

@@ -11,6 +11,10 @@ use WebService::Reddit::Created;
 extends 'WebService::Reddit::Thing';
 with 'WebService::Reddit::Votable', 'WebService::Reddit::Created';
 
+has '+kind' => (
+	default => 't3',
+);
+
 has 'author' => (
 	is => 'rw',
 	isa => Str,
