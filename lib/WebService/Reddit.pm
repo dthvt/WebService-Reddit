@@ -33,6 +33,14 @@ sub controversial {
 	return $self->builder->build(json => $data);
 }
 
+sub hot {
+	my ($self, %args) = @_;
+	
+	my $data = $self->_api->hot(%args);
+	
+	return $self->builder->build(json => $data);
+}
+
 sub top {
 	my ($self, %args) = @_;
 	

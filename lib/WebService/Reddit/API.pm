@@ -61,6 +61,11 @@ sub controversial {
 	return $self->GET('CONTROVERSIAL', %args);
 }
 
+sub hot {
+	my ($self, %args) = @_;
+	return $self->GET('HOT', %args);
+}
+
 sub top {
 	my ($self, %args) = @_;
 	return $self->GET('TOP', %args);
