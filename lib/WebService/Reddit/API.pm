@@ -11,6 +11,11 @@ my $base = 'http://www.reddit.com';
 my %api = (
 	CLEAR_SESSIONS => '/api/clear_sessions',
 	
+	CONTROVERSIAL => '/controversial.json',
+	HOT => '/hot.json',
+	LISTING => '/listing.json',
+	NEW => '/new.json',
+	RANDOM => '/random.json',
 	TOP => '/top.json',
 	
 );
@@ -49,6 +54,11 @@ sub GET {
 	my $data = decode_json($response->content);
 	
 	return $data;
+}
+
+sub controversial {
+	my ($self, %args) = @_;
+	return $self->GET('CONTROVERSIAL', %args);
 }
 
 sub top {
