@@ -4,6 +4,13 @@ use namespace::autoclean;
 use Moose;
 use MooseX::Types::Moose qw(:all);
 
+use WebService::Reddit::Thing;
+use WebService::Reddit::Votable;
+use WebService::Reddit::Created;
+
+extends 'WebService::Reddit::Thing';
+with 'WebService::Reddit::Votable', 'WebService::Reddit::Created';
+
 has 'author' => (
 	is => 'rw',
 	isa => Str,
@@ -129,15 +136,10 @@ has 'edited' => (
 	isa => Int,
 );
 
-has 'distinguised' => (
+has 'distinguished' => (
 	is => 'rw',
 	isa => Str,
 );
-
-sub BUILD {
-	my ($self, $args) = @_;
-	
-}
 
 __PACKAGE__->meta->make_immutable;
 1;

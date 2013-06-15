@@ -9,9 +9,9 @@ use HTTP::Request;
 
 my $base = 'http://www.reddit.com';
 my %api = (
-	CLEAR_SESSIONS => ['GET', '/api/clear_sessions'],
+	CLEAR_SESSIONS => '/api/clear_sessions',
 	
-	TOP => ['GET', '/top.json'],
+	TOP => '/top.json',
 	
 );
 	
@@ -21,33 +21,39 @@ has '_ua' => (
 	isa => 'LWP::UserAgent',
 	default => sub { LWP::UserAgent->new },
 	handles => {
-		post => 'post',
-		get => 'get',
+		#post => 'post',
+		#get => 'get',
 		cookie_jar => 'cookie_jar',
 	}
 );
 
-
-
-sub clear_sessions {
-	my ($self, %args) = @_;
+#
+# GET
+#
+# Takes an %api identifier and args, builds a query string, performs a GET,
+# then decodes the response as JSON and returns the resulting perl structure.
+#
+sub GET {
+	my ($self, $api_tag, %args) = @_;
 	
-}
-
-sub top {
-	my ($self, %args) = @_;
+	my $query = join('&', map { $_ . "=" . $args{$_} } keys %args);
 	
-	my $query = join('&', map { "$_" . "=" . $args{$_} } keys %args);
+	my $target = $base . $api{$api_tag} . "?" . $query;
 	
-	my $target = $base . $api{TOP}[1] . "?" . $query;
+	print "API GET request: $target\n";
 	
-	print "API request: $target\n";
-	
-	my $response = $self->_ua->request(HTTP::Request->new($api{TOP}[0] => $target));
+	my $response = $self->_ua->request(
+		HTTP::Request->new('GET' => $target)
+	);
 	
 	my $data = decode_json($response->content);
 	
 	return $data;
+}
+
+sub top {
+	my ($self, %args) = @_;
+	return $self->GET('TOP', %args);
 }
 	
 	

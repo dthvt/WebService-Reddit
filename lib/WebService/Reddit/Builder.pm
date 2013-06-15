@@ -12,6 +12,11 @@ use MooseX::Types::Moose qw(:all);
 use Carp;
 use feature 'switch';
 
+use Data::Dumper qw(Dumper);
+
+use WebService::Reddit::Listing;
+use WebService::Reddit::Link;
+
 sub build {
 	my ($self, %args) = @_;
 	
@@ -53,7 +58,31 @@ sub build_listing {
 }
 
 sub build_link {
-	return "blah";
+	my ($self, %args) = @_;
+	
+	my $l = WebService::Reddit::Link->new;
+
+	foreach my $name (keys %{$args{json}{data}}) {
+		if ($l->can($name)) {
+			
+			# Have to handle bools special because on JSON encoding.
+			if (JSON::is_bool($args{json}{data}{$name})) {
+				$l->$name(($args{json}{data}{$name} eq JSON::true) ? 1 : 0);
+			}
+			elsif (defined $args{json}{data}{$name}) {
+				$l->$name($args{json}{data}{$name});
+			}
+			else {
+				print "Building link, skipping undefined data name $name\n";
+			}
+		}
+		else {
+			print "Building link, found unknown data name $name\n";
+			#print Dumper ($args{json}{data}{$name});
+		}
+	}
+	
+	return $l;
 }
 
 __PACKAGE__->meta->make_immutable;

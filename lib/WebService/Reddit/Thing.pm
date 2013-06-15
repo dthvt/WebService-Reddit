@@ -28,7 +28,7 @@ has 'kind' => (
 # Used to store a reference to the WebService::Reddit object that owns this Thing.
 has '_session' => (
 	is => 'rw',
-	isa => MaybeRef,
+	isa => Maybe[Ref],
 );
 
 __PACKAGE__->meta->make_immutable;
